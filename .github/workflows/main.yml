@@ -1,3 +1,4 @@
+#start
 name: "vprofile Application"
 on:
   workflow_dispatch:
