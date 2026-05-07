@@ -78,10 +78,16 @@ jobs:
                    --query "clusters[?starts_with(@, '$EKS_CLUSTER')] | [0]" \
                    --output text)
           echo "name=$NAME" >> $GITHUB_OUTPUT
- 
+
+      - name: Show cluster name
+        run: echo "${{ steps.cluster.outputs.name }}"
+
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --region $AWS_REGION --name ${{ steps.cluster.outputs.name }}
- 
+
+      - name: Test Kubernetes connection
+        run: kubectl get nodes
+
       - name: Install NGINX Ingress Controller
         run: |
           kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/controller-v1.10.1/deploy/static/provider/aws/deploy.yaml
